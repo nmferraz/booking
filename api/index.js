@@ -1,8 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
+import authRoute from "./routes/auth.js";
+import usersRoute from "./routes/users.js";
+import hotelsRoute from "./routes/hotels.js";
+import roomsRoute from "./routes/rooms.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import mongoose from "mongoose";
 
 const app = express();
 dotenv.config();
@@ -18,11 +22,16 @@ const connect = async () => {
 
 mongoose.connection.on("disconnected", () => {
   console.log("MongoDB disconnected");
-})
+});
 
 mongoose.connection.on("connected", () => {
   console.log("MongoDB connected");
-})
+});
+
+app.use("/api/v0/auth", authRoute);
+app.use("/api/v0/users", usersRoute);
+app.use("/api/v0/hotels", hotelsRoute);
+app.use("/api/v0/rooms", roomsRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
@@ -36,6 +45,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(8800, () => {
-  connect()
+  connect();
   console.log("Connected to backend.");
 });
