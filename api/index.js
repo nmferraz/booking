@@ -14,25 +14,25 @@ dotenv.config();
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO);
-    console.log("MongoDB connected");
+    console.log("Connected to mongoDB.");
   } catch (error) {
     throw error;
   }
 };
 
 mongoose.connection.on("disconnected", () => {
-  console.log("MongoDB disconnected");
+  console.log("mongoDB disconnected!");
 });
 
 //middlewares
-app.use(cors())
-app.use(cookieParser())
+app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 
-app.use("/api/v0/auth", authRoute);
-app.use("/api/v0/users", usersRoute);
-app.use("/api/v0/hotels", hotelsRoute);
-app.use("/api/v0/rooms", roomsRoute);
+app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/users", usersRoute);
+app.use("/api/v1/hotels", hotelsRoute);
+app.use("/api/v1/rooms", roomsRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
